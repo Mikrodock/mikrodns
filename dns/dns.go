@@ -6,8 +6,9 @@ import (
 	"net"
 	"strings"
 
-	"github.com/mediocregopher/gobdns/config"
-	"github.com/mediocregopher/gobdns/ips"
+	"gobdns/config"
+	"gobdns/ips"
+
 	"github.com/miekg/dns"
 )
 

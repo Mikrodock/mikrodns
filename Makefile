@@ -1,7 +1,22 @@
-all:
-	(cd http/console && make all)
-	go-bindata -o=http/bindata.go -prefix=http/console/build -pkg=http http/console/build
-	go build
 
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+
+DOCKERCMD=docker
+
+DOCKERBUILD=$(DOCKERCMD) build -t izanagi1995/mikroproxy .
+DOCKERPUSH=$(DOCKERCMD) push izanagi1995/mikroproxy
+
+BINARY=mikrodns
+
+all: build docker docker-push
+build:
+	go build -a -tags netgo -ldflags '-w' -o $(BINARY) main.go
 clean:
-	rm http/bindata.go
+	$(GOCLEAN)
+	rm -rf $(BINARY)
+docker:
+	$(DOCKERBUILD)
+docker-push:
+	$(DOCKERPUSH)

@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/mediocregopher/gobdns/config"
-	"github.com/mediocregopher/gobdns/snapshot"
+	"gobdns/config"
+	"gobdns/snapshot"
 )
 
 func init() {

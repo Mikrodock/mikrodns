@@ -3,7 +3,7 @@ package snapshot
 import (
 	"encoding/json"
 
-	"github.com/mediocregopher/gobdns/ips"
+	"gobdns/ips"
 )
 
 type Snapshot struct {

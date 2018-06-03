@@ -6,12 +6,12 @@ import (
 	"log"
 	"net/http"
 	"path"
+	"strconv"
 	"strings"
 
-	"github.com/elazarl/go-bindata-assetfs"
-	"github.com/mediocregopher/gobdns/config"
-	"github.com/mediocregopher/gobdns/ips"
-	"github.com/mediocregopher/gobdns/snapshot"
+	"gobdns/config"
+	"gobdns/ips"
+	"gobdns/snapshot"
 )
 
 func init() {
@@ -24,13 +24,6 @@ func init() {
 		http.HandleFunc("/api/domains/all", getAll)
 		http.HandleFunc("/api/domains/", putDelete)
 		http.HandleFunc("/api/snapshot", getSnapshot)
-
-		assetFS := assetfs.AssetFS{
-			Asset:    Asset,
-			AssetDir: AssetDir,
-		}
-
-		http.Handle("/", http.FileServer(&assetFS))
 		http.ListenAndServe(config.APIAddr, nil)
 	}()
 }
@@ -51,6 +44,25 @@ func putDelete(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "PUT", "POST":
+		body, err := ioutil.ReadAll(r.Body)
+		stringBody := string(body)
+		parts := strings.Split(stringBody, " ")
+		if len(parts) != 2 {
+			log.Println("Body", stringBody, "doesn't have the 2 required parts")
+			w.WriteHeader(400)
+			return
+		}
+		ip := parts[0]
+		weight, err := strconv.Atoi(strings.TrimSpace(parts[1]))
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(500)
+			return
+		}
+		ip = strings.TrimSpace(ip)
+		ips.Set(domain, ip, weight)
+
+	case "DELETE":
 		ipB, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			log.Println(err)
@@ -58,13 +70,7 @@ func putDelete(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		ip := strings.TrimSpace(string(ipB))
-		if ip == "" {
-			ip = getIP(r)
-		}
-		ips.Set(domain, ip)
-
-	case "DELETE":
-		ips.Unset(domain)
+		ips.Unset(domain, ip)
 	}
 }
 

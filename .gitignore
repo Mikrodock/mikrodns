@@ -4,3 +4,4 @@ gobdns
 *.db*
 
 bindata.go
+mikrodns

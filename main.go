@@ -1,10 +1,10 @@
 package main
 
 import (
-	_ "github.com/mediocregopher/gobdns/dns"
-	_ "github.com/mediocregopher/gobdns/http"
-	_ "github.com/mediocregopher/gobdns/persist"
-	_ "github.com/mediocregopher/gobdns/repl"
+	_ "gobdns/dns"
+	_ "gobdns/http"
+	_ "gobdns/persist"
+	_ "gobdns/repl"
 )
 
 func main() {
