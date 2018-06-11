@@ -1,7 +1,6 @@
 package ips
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -77,7 +76,6 @@ func NewVoseRandom(dist map[string]float64) *VoseRandom {
 		} else {
 			large.push(l)
 		}
-		fmt.Printf("small: %v\nlarge:%v\n", small, large)
 	}
 
 	for len(large) > 0 {
@@ -94,8 +92,6 @@ func NewVoseRandom(dist map[string]float64) *VoseRandom {
 }
 
 func (v *VoseRandom) Next() string {
-
-	fmt.Printf("%v\n%v\n", v.table_prob, v.table_alias)
 
 	i := v.rnd.Intn(len(v.table_prob))
 	var k string
