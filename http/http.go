@@ -62,6 +62,10 @@ func putDelete(w http.ResponseWriter, r *http.Request) {
 		ip = strings.TrimSpace(ip)
 		ips.Set(domain, ip, weight)
 
+		results, _ := ips.GetAllForDomain(domain)
+
+		log.Printf("Added %s to domain %s\n : %#v", ip, domain, results)
+
 	case "DELETE":
 		ipB, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -71,6 +75,10 @@ func putDelete(w http.ResponseWriter, r *http.Request) {
 		}
 		ip := strings.TrimSpace(string(ipB))
 		ips.Unset(domain, ip)
+
+		results, _ := ips.GetAllForDomain(domain)
+
+		log.Printf("Deleted %s from domain %s\n : %#v", ip, domain, results)
 	}
 }
 

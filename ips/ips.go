@@ -1,7 +1,6 @@
 package ips
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 )
@@ -25,14 +24,6 @@ func Get(domain string) (string, bool) {
 
 		if ok {
 
-			if count, exist := debug[ip]; exist {
-				debug[ip] = count + 1
-			} else {
-				debug[ip] = 1
-			}
-
-			fmt.Printf("%v\n", debug)
-
 			return ip, true
 		} else {
 			return "", false
@@ -52,7 +43,13 @@ func GetExact(domain string) (string, bool) {
 	} else {
 		return "", false
 	}
+}
 
+func GetAllForDomain(domain string) (map[string]int, bool) {
+	mLock.RLock()
+	defer mLock.RUnlock()
+	entry, ok := m[appendPeriod(domain)]
+	return entry.Resolvers, ok
 }
 
 // Get's a copy of the map which maps all known domains to all known ips
