@@ -5,8 +5,8 @@ GOCLEAN=$(GOCMD) clean
 
 DOCKERCMD=docker
 
-DOCKERBUILD=$(DOCKERCMD) build -t izanagi1995/mikroproxy .
-DOCKERPUSH=$(DOCKERCMD) push izanagi1995/mikroproxy
+DOCKERBUILD=$(DOCKERCMD) build -t izanagi1995/mikrodns .
+DOCKERPUSH=$(DOCKERCMD) push izanagi1995/mikrodns
 
 BINARY=mikrodns
 
